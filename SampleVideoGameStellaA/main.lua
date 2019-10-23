@@ -1,9 +1,8 @@
 -----------------------------------------------------------------------------------------
---
--- main.lua
--- Created by: Your Name
--- Date: Month Day, Year
--- Description: This calls the splash screen of the app to load itself.
+-- Title: SampleVideoGame
+-- Name: Stella Armstrong
+-- Course: ICS2O
+-- This program...
 -----------------------------------------------------------------------------------------
 
 -- Hiding Status Bar
