@@ -35,8 +35,7 @@ local scene = composer.newScene( sceneName )
 local bkg_image
 local playButton
 local creditsButton
-
-local introbkg_image
+local instructionsButton
 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
@@ -128,7 +127,7 @@ function scene:create( event )
         } ) 
     
     -----------------------------------------------------------------------------------------
-    
+
     -- Creating Instructions Button
     instructionsButton = widget.newButton( 
         {
