@@ -137,7 +137,7 @@ function scene:create( event )
 
             -- Insert the images here
             defaultFile = "Images/Instructions Button Unpressed.png",
-            overFile = "Images/Instructions Button Pressed.png",
+            overFile = "Images/Instructions Button.png",
 
             -- When the button is released, call the Credits transition function
             onRelease = InstructionsTransition
@@ -149,6 +149,7 @@ function scene:create( event )
     -- Associating button widgets with this scene
     sceneGroup:insert( playButton )
     sceneGroup:insert( creditsButton )
+    sceneGroup:insert( instructionsButton )
     
     -- INSERT INSTRUCTIONS BUTTON INTO SCENE GROUP
 
