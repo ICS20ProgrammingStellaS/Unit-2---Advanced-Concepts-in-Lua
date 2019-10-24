@@ -23,11 +23,11 @@ local scene = composer.newScene( sceneName )
 -----------------------------------------------------------------------------------------
  
 -- The local variables for this scene
-local beetleship
+local snake
 local scrollXSpeed = 8
 local scrollYSpeed = -3
-local jungleSounds = audio.loadSound("Sounds/animals144.mp3")
-local jungleSoundsChannel
+local rainSounds = audio.loadSound("Sounds/rain.mp3")
+local rainSoundsChannel
 
 --------------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
@@ -35,8 +35,8 @@ local jungleSoundsChannel
 
 -- The function that moves the beetleship across the screen
 local function moveBeetleship()
-    beetleship.x = beetleship.x + scrollXSpeed
-    beetleship.y = beetleship.y + scrollYSpeed
+    snake.x = snake.x + scrollXSpeed
+    snake.y = snake.y + scrollYSpeed
 end
 
 -- The function that will go to the main menu 
@@ -55,17 +55,17 @@ function scene:create( event )
     local sceneGroup = self.view
 
     -- set the background to be black
-    display.setDefault("background", 0, 0, 0)
+    display.setDefault("background", 204/255, 255/255, 153/255)
 
     -- Insert the beetleship image
-    beetleship = display.newImageRect("Images/beetleship.png", 200, 200)
+    snake = display.newImageRect("Images/snake.png", 200, 200)
 
     -- set the initial x and y position of the beetleship
-    beetleship.x = 100
-    beetleship.y = display.contentHeight/2
+    snake.x = 100
+    snake.y = display.contentHeight/2
 
     -- Insert objects into the scene group in order to ONLY be associated with this scene
-    sceneGroup:insert( beetleship )
+    sceneGroup:insert( snake )
 
 end -- function scene:create( event )
 
@@ -90,7 +90,7 @@ function scene:show( event )
 
     elseif ( phase == "did" ) then
         -- start the splash screen music
-        jungleSoundsChannel = audio.play(jungleSounds )
+        rainSoundsChannel = audio.play(rainSounds )
 
         -- Call the moveBeetleship function as soon as we enter the frame.
         Runtime:addEventListener("enterFrame", moveBeetleship)
@@ -124,7 +124,7 @@ function scene:hide( event )
     elseif ( phase == "did" ) then
         
         -- stop the jungle sounds channel for this screen
-        audio.stop(jungleSoundsChannel)
+        audio.stop(rainSoundsChannel)
     end
 
 end --function scene:hide( event )
