@@ -50,14 +50,14 @@ end
 
 -- Creating Transition to Level1 Screen
 local function Level1ScreenTransition( )
-    composer.gotoScene( "level1_screen", {effect = "zoomInOutFade", time = 1000})
+    composer.gotoScene( "level1_screen", {effect = "fromTop", time = 1000})
 end    
 
 ----------------------------------------------------------------------------------------
 
 -- Creating Transition Function to Instructions Page
 local function InstructionsTransition( )       
-    composer.gotoScene( "instructions", {effect = "flipFadeOutIn", time = 500})
+    composer.gotoScene( "instructions", {effect = "fromRight", time = 500})
 end 
 
 -- INSERT LOCAL FUNCTION DEFINITION THAT GOES TO INSTRUCTIONS SCREEN 
