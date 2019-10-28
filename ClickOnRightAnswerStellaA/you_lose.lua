@@ -32,6 +32,9 @@ local scene = composer.newScene( sceneName )
 -- local variables for the scene
 local bkg
 
+-- if you lose game it plays sound
+local lostGameSound = audio.loadSound("Sounds/monsterSound.wav")
+local lostGameSoundChannel
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
@@ -64,6 +67,8 @@ end
 -- The function called when the scene is issued to appear on screen
 function scene:show( event )
 
+    
+
     -- Creating a group that associates objects with the scene
     local sceneGroup = self.view
 
@@ -83,6 +88,8 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
+        -- play incorrect sound 
+        lostGameSoundChannel = audio.play(lostGameSound)
     end
 
 end

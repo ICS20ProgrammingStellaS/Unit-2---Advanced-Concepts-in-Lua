@@ -82,8 +82,6 @@ local correctSound = audio.loadSound("Sounds/CorrectAnswer.mp3")
 local correctSoundChannel
 local wrongSound = audio.loadSound("Sounds/WrongBuzzer.mp3")
 local wrongSoundChannel
-local lostGameSound = audio.loadSound("Sounds/correctSound.mp3")
-local lostGameSoundChannel
 local wonGameSound = audio.loadSound("Sounds/correctSound.mp3")
 local wonGameSoundChannel
 -----------------------------------------------------------------------------------------
@@ -147,6 +145,8 @@ end
 -- Function that transitions to Lose Screen
 local function LoseScreenTransition( )        
     composer.gotoScene( "you_lose", {effect = "zoomInOutFade", time = 1000})
+    -- play incorrect sound 
+    lostGameSoundChannel = audio.play(lostGameSound)
 end 
 
 -- The function that displays the equation and determines the answer and the wrong answers
@@ -203,8 +203,8 @@ local function TouchListenerAnswer(touch)
             numberCorrect = numberCorrect + 1
 
             -- play correct sound 
-            correctSoundChannel = audio.play(CorrectAnswer)
-            
+            correctSoundChannel = audio.play(correctSound)
+
             -- call RestartScene after 1 second
             timer.performWithDelay( 1000, RestartScene )
         end        
@@ -224,6 +224,10 @@ local function TouchListenerWrongAnswer1(touch)
         if (answer ~= tonumber(userAnswer)) then
             -- decrease a life
             lives = lives - 1
+
+            -- play incorrect sound 
+            wrongSoundChannel = audio.play(wrongSound)
+
             -- call RestartScene after 1 second
             timer.performWithDelay( 1000, RestartScene )            
         end        
@@ -244,6 +248,10 @@ local function TouchListenerWrongAnswer2(touch)
             if (answer ~= tonumber(userAnswer)) then
                 -- decrease a life
                 lives = lives - 1
+
+                -- play incorrect sound 
+                wrongSoundChannel = audio.play(wrongSound)
+
                 -- call RestartScene after 1 second
                 timer.performWithDelay( 1000, RestartScene )            
             end        
@@ -264,6 +272,10 @@ local function TouchListenerWrongAnswer3(touch)
             if (answer ~= tonumber(userAnswer)) then
                 -- decrease a life
                 lives = lives - 1
+
+                -- play incorrect sound 
+                wrongSoundChannel = audio.play(wrongSound)
+
                 -- call RestartScene after 1 second
                 timer.performWithDelay( 1000, RestartScene )            
             end        
@@ -359,6 +371,7 @@ function scene:create( event )
     sceneGroup:insert( answerTextObject )
     sceneGroup:insert( wrongAnswer1TextObject )
     sceneGroup:insert( wrongAnswer2TextObject )
+    sceneGroup:insert( wrongAnswer3TextObject )
     sceneGroup:insert( congratulationText )
     sceneGroup:insert( correct )
     sceneGroup:insert( level1Text )
