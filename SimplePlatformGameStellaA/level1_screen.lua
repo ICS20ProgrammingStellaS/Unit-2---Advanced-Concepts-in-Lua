@@ -49,7 +49,6 @@ local spikes3platform
 
 local torchesAndSign
 local door
-local door
 local character
 
 local heart1
@@ -58,13 +57,15 @@ local numLives = 2
 
 local rArrow 
 local uArrow
+local lArrow
 
 local motionx = 0
-local SPEED = 5
-local LINEAR_VELOCITY = -100
-local GRAVITY = 7
+local SPEED = 6
+local LINEAR_VELOCITY = -110
+local GRAVITY = 8
 
 local leftW 
+local rightW
 local topW
 local floor
 
@@ -74,6 +75,16 @@ local theBall
 
 local questionsAnswered = 0
 
+---------------------------------------------------------------------------------------
+-- SOUNDS
+-------------------------------------------------------------------
+-- lost game sound
+local youLoseSound = audio.loadSound("Sounds/YouLose.mp3")
+local youLoseSoundChannel
+
+-- lose life sound when you hit spikes or get question wrong
+local loseLifeSound = audio.loadSound("Sounds/BoingSoundEffect.mp3")
+local loseLifeSoundChannel
 -----------------------------------------------------------------------------------------
 -- LOCAL SCENE FUNCTIONS
 ----------------------------------------------------------------------------------------- 
@@ -89,6 +100,11 @@ local function up (touch)
     if (character ~= nil) then
         character:setLinearVelocity( 0, LINEAR_VELOCITY )
     end
+end
+
+local function left (touch)
+    motionx = -SPEED
+    character.xScale = 1
 end
 
 -- Move character horizontally
@@ -107,11 +123,13 @@ end
 local function AddArrowEventListeners()
     rArrow:addEventListener("touch", right)
     uArrow:addEventListener("touch", up)
+    lArrow:addEventListener("touch", left)
 end
 
 local function RemoveArrowEventListeners()
     rArrow:removeEventListener("touch", right)
     uArrow:removeEventListener("touch", up)
+    lArrow:removeEventListener("touch", left)
 end
 
 local function AddRuntimeListeners()
@@ -196,13 +214,15 @@ local function onCollision( self, event )
                 -- update hearts
                 heart1.isVisible = true
                 heart2.isVisible = false
-                timer.performWithDelay(200, ReplaceCharacter) 
+                timer.performWithDelay(200, ReplaceCharacter)
+                loseLifeSoundChannel = audio.play(loseLifeSound) 
 
             elseif (numLives == 0) then
                 -- update hearts
                 heart1.isVisible = false
                 heart2.isVisible = false
                 timer.performWithDelay(200, YouLoseTransition)
+                youLoseSoundChannel = audio.play(youLoseSound)
             end
         end
 
@@ -265,6 +285,8 @@ local function RemoveCollisionListeners()
 
     door:removeEventListener( "collision")
 
+    loseLifeSoundChannel = audio.play(loseLifeSound)
+
 end
 
 local function AddPhysicsBodies()
@@ -283,6 +305,7 @@ local function AddPhysicsBodies()
     physics.addBody( spikes3platform, "static", { density=1.0, friction=0.3, bounce=0.2 } )
 
     physics.addBody(leftW, "static", {density=1, friction=0.3, bounce=0.2} )
+    physics.addBody(rightW, "static", {density=1, friction=0.3, bounce=0.2} )
     physics.addBody(topW, "static", {density=1, friction=0.3, bounce=0.2} )
     physics.addBody(floor, "static", {density=1, friction=0.3, bounce=0.2} )
 
@@ -455,13 +478,21 @@ function scene:create( event )
     -- Insert objects into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( rArrow)
 
-    --Insert the left arrow
+    --Insert the up arrow
     uArrow = display.newImageRect("Images/UpArrowUnpressed.png", 50, 100)
     uArrow.x = display.contentWidth * 8.2 / 10
     uArrow.y = display.contentHeight * 8.5 / 10
 
     -- Insert objects into the scene group in order to ONLY be associated with this scene
     sceneGroup:insert( uArrow)
+
+    --Insert the left arrow
+    lArrow = display.newImageRect("Images/leftArrowUnpressed.png", 100, 50)
+    lArrow.x = display.contentWidth * 7.2 / 10
+    lArrow.y = display.contentHeight * 9.5 / 10
+
+    -- Insert objects into the scene group in order to ONLY be associated with this scene
+    sceneGroup:insert( lArrow)
 
     --WALLS--
     leftW = display.newLine( 0, 0, 0, display.contentHeight)
