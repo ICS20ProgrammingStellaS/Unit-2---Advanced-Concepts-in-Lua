@@ -34,7 +34,13 @@ local soccerball
 --the text that displays the question
 local questionText 
 
-local incorrect
+local incorrect 
+local correct
+
+local points = 0
+local pointsText
+local lives = 2
+local livesText
 
 --the alternate numbers randomly generated
 local correctAnswer
@@ -75,10 +81,30 @@ local userAnswerBoxPlaceholder
 -- sound effects
 local correctSound
 local booSound
+-----------------------------------------------------------------------------------------
+-- SOUNDS
+-----------------------------------------------------------------------------------------
+
+local correctSound = audio.loadSound("Sounds/Correct.wav")
+local correctSoundChannel
+local wrongSound = audio.loadSound("Sounds/boo.mp3")
+local wrongSoundChannel
+
+local youLoseSound = audio.loadSound("Sounds/youLoseSound.mp3")
+local youLoseSoundChannel
+local youWinSound = audio.loadSound("Sounds/yabbadabbalaugh.wav")
+local youWinSoundChannel
 
 -----------------------------------------------------------------------------------------
 -- LOCAL FUNCTIONS
 -----------------------------------------------------------------------------------------
+local function HideIncorrect()
+    incorrect.isVisible = false
+end
+
+local function HideCorrect()
+    correct.isVisible = false
+end
 
 local function DisplayQuestion()
     local randomNumber1
@@ -273,6 +299,21 @@ local function TouchListenerAnswerbox(touch)
                 -- call the function to check if the user's input is correct or not
                 CheckUserAnswerInput()
 
+                correct.isVisible = true
+                timer.performWithDelay(1500, HideCorrect)
+
+                points = points + 1
+
+                correctSoundChannel = audio.play(correctSound)
+
+                if (points == 3) then
+                    composer.gotoScene( "you_win" )
+                    youWinSoundChannel = audio.play(youWinSound)
+                else
+                -- otherwise it aks another question
+                    timer.performWithDelay( 1500, PositionAnswers )
+                end  
+
             --else make box go back to where it was
             else
                 answerbox.x = answerboxPreviousX
@@ -315,6 +356,19 @@ local function TouchListenerAnswerBox1(touch)
                 CheckUserAnswerInput()
 
                 incorrect.isVisible = true
+                timer.performWithDelay(1500, HideIncorrect)
+
+                lives = lives - 1
+
+                wrongSoundChannel = audio.play(wrongSound)
+
+                if (lives == 0) then
+                    composer.gotoScene( "you_lose" )
+                    youLoseSoundChannel = audio.play(youLoseSound)
+
+                else
+                    timer.performWithDelay( 1500, PositionAnswers )
+                end 
 
             --else make box go back to where it was
             else
@@ -358,6 +412,20 @@ local function TouchListenerAnswerBox2(touch)
                 CheckUserAnswerInput()
 
                 incorrect.isVisible = true
+                timer.performWithDelay(1500, HideIncorrect)
+
+                lives = lives - 1
+
+                wrongSoundChannel = audio.play(wrongSound)
+
+                if (lives == 0) then
+                    composer.gotoScene( "you_lose" )
+                    youLoseSoundChannel = audio.play(youLoseSound)
+
+                else
+                    timer.performWithDelay( 1500, PositionAnswers )
+                end 
+
 
             --else make box go back to where it was
             else
@@ -400,6 +468,21 @@ local function TouchListenerAnswerBox3(touch)
                 CheckUserAnswerInput()
 
                 incorrect.isVisible = true
+                timer.performWithDelay(1500, HideIncorrect)
+
+                lives = lives - 1
+
+                wrongSoundChannel = audio.play(wrongSound)
+
+                if (lives == 0) then
+                    composer.gotoScene( "you_lose" )
+                    youLoseSoundChannel = audio.play(youLoseSound)
+
+                else
+                    timer.performWithDelay( 1500, PositionAnswers )
+                end 
+
+
 
             --else make box go back to where it was
             else
@@ -453,9 +536,13 @@ function scene:create( event )
     bkg_image.width = display.contentWidth
     bkg_image.height = display.contentHeight
 
-    incorrect = display.newText("INCORRECT!", display.contentWidth/2, display.contentHeight*2.5/4, nil, 100 )
+    incorrect = display.newText("Incorrect!", display.contentWidth*1.5/3, display.contentHeight*3/4, nil, 75 )
     incorrect:setTextColor(1, 1, 1)
     incorrect.isVisible = false
+
+    correct = display.newText("Correct!", display.contentWidth*1.5/3, display.contentHeight*3/4, nil, 75 )
+    correct:setTextColor(1, 1, 1)
+    correct.isVisible = false
 
     --the text that displays the question
     questionText = display.newText( "" , 0, 0, nil, 100)
@@ -502,6 +589,8 @@ function scene:create( event )
     sceneGroup:insert( alternateAnswerBox2 )
     sceneGroup:insert( alternateAnswerBox3 )
     sceneGroup:insert( soccerball )
+    sceneGroup:insert( incorrect )
+    sceneGroup:insert( correct )
 
 end --function scene:create( event )
 
